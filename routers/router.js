@@ -8,10 +8,11 @@ const todo_controller = require('../controllers/todo.controller');
 //users
 router.post('/usersignup', user_controller.addUsersDetails);
 router.post('/userlogin', user_controller.userLogIn);
+router.get('/gettodolistbyuserid', todo_controller.getTodoByUserId);
 
 //TO-DO
 router.post('/addtask', todo_controller.addTaskTodo);
-router.get('/gettodolistbyuserid', todo_controller.getTodoById);
+router.get('/gettaskbyid/:id', todo_controller.getTodoById);
 router.put('/updatetodobyuserid/:id', todo_controller.updateTodoById);
 router.delete('/deletetodobyuserid/:id', todo_controller.deleteTodoById);
 

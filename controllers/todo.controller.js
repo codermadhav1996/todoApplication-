@@ -44,10 +44,9 @@ exports.addTaskTodo = async(req, res) => {
 
 
 
-
 //localhost:6000/todo/gettodolistbyuserid
 
-exports.getTodoById = async (req, res) => {
+exports.getTodoByUserId = async (req, res) => {
     let token = req.headers["token"]
     if (!token) { return res.status(400).json({message :"No token provided"}) }
     let decoded = jwt.verify(token, environment.data.jwtSecret , (err, decoded) => {
@@ -70,6 +69,27 @@ exports.getTodoById = async (req, res) => {
     }
 }
 
+
+
+//localhost:6000/todo/gettaskbyid/task_id
+
+exports.getTodoById = async (req, res) => {
+    let task_id = req.params.id
+    try{
+        let result = await TODO_COLLECTION.findById(task_id)
+        if ( result == 0 ) { return res.status(404).json({ status:"Error" , message : 'Document is not found'})}
+        return res.status(200).json({
+            status : "Success",
+            message : "Successfully Fetch the TODO list By ID",
+            data : result
+        })
+    } catch(error) {
+        return res.status(400).json({
+            status : "Error",
+            message : "Error in Fetching the TODO list By ID"
+        })
+    }
+}
 
 
 
