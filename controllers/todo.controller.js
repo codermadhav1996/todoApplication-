@@ -73,15 +73,10 @@ exports.getTodoById = async (req, res) => {
 
 
 
-//localhost:6000/todo/updatetodobyuserid
+//localhost:6000/todo/updatetodobyuserid/task_id
 
 exports.updateTodoById = async(req, res) => {
-    let token = req.headers["token"]
-    if (!token) { return res.status(400).json({message :"No token provided"}) }
-    let decoded = jwt.verify(token, environment.data.jwtSecret, (err, decoded) => {
-        if (err) { return res.status(400).json({message :"error in token"})}
-        return decoded
-    })
+    let task_id = req.params.id
     let data = {
         Taskname : req.body.Taskname,
         edit_Timestamp : moment(new Date()).format(),
@@ -90,9 +85,9 @@ exports.updateTodoById = async(req, res) => {
         completionStatus : req.body.completionStatus
     }
     try{
-        let result = await TODO_COLLECTION.find({ userId : decoded.id })
-        if ( result == 0 ) { return res.status(404).json({ status:"Error" , message : 'Document is not found'})}
-        let update = _.merge(result[0], data)
+        let result = await TODO_COLLECTION.findById(task_id)
+        if ( !result ) { return res.status(404).json({ status:"Error" , message : 'Document is not found'})}
+        let update = _.merge(result, data)
         let UpdatedResult = await update.save()
         return res.status(200).json({
             status : "Success",
@@ -111,19 +106,14 @@ exports.updateTodoById = async(req, res) => {
 
 
 
-//localhost:6000/todo/deletetodobyuserid
+//localhost:6000/todo/deletetodobyuserid/task_id
 
 exports.deleteTodoById = async(req, res) => {
-    let token = req.headers["token"]
-    if (!token) { return res.status(400).json({message :"No token provided"}) }
-    let decoded = jwt.verify(token, environment.data.jwtSecret, (err, decoded) => {
-        if (err) { return res.status(400).json({message :"error in token"})}
-        return decoded
-    })
+    let task_id = req.params.id
     try{
-        let data = await TODO_COLLECTION.find({ userId : decoded.id })
-        if ( data == 0 ) { return res.status(404).json({ status:"Error" , message : 'Document is not found'})}
-        let result = await data[0].remove()
+        let data = await TODO_COLLECTION.findById(task_id)
+        if ( !data ) { return res.status(404).json({ status:"Error" , message : 'Document is not found'})}
+        let result = await data.remove()
         return res.status(200).json({
             status : "Success",
             message : "Successfully Delete the TODO list By UserID"

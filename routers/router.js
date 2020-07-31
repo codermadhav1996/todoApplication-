@@ -12,8 +12,8 @@ router.post('/userlogin', user_controller.userLogIn);
 //TO-DO
 router.post('/addtask', todo_controller.addTaskTodo);
 router.get('/gettodolistbyuserid', todo_controller.getTodoById);
-router.put('/updatetodobyuserid', todo_controller.updateTodoById);
-router.delete('/deletetodobyuserid', todo_controller.deleteTodoById);
+router.put('/updatetodobyuserid/:id', todo_controller.updateTodoById);
+router.delete('/deletetodobyuserid/:id', todo_controller.deleteTodoById);
 
 //get All Tasks
 router.get('/getalltasks', todo_controller.getAllTodo);
