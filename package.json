@@ -20,6 +20,6 @@
     "moment": "^2.27.0",
     "mongoose": "^5.9.26",
     "nodemon": "^2.0.4",
-    "validator": "^13.1.1"
+    "validator": "^13.7.0"
   }
 }
